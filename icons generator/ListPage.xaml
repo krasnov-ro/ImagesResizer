@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="icons_generator.ListPage"
+             Title="ListPage">
+    <VerticalStackLayout>
+        <Label 
+            x:Name="Header"
+            Text="Список размеров для Android"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <ListView 
+            x:Name="SizesList"
+            ItemsSource="{Binding ImageSizes}"
+            MaximumHeightRequest="400"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            ItemTapped="SizesListItemTapped"/>
+        
+        <Grid
+            VerticalOptions="Start"
+            WidthRequest="20">
+            
+            <ImageButton Source="del.png"
+            x:Name="DeleteButton"
+            Background="#0000"
+            TranslationX="20"
+            TranslationY="20"
+            ScaleX="1.7"
+            ScaleY="1.7"
+            Clicked="ListItemDelClicked"
+            VerticalOptions="Start"/>
+
+            <ImageButton Source="add.png"
+            x:Name="AddButton"
+            Background="#0000"
+            TranslationX="-20"
+            TranslationY="20"
+            ScaleX="2"
+            ScaleY="2"
+            Clicked="ListItemAddClicked"
+            VerticalOptions="Start" />
+        </Grid>
+        <Button
+            x:Name="ConfirmButton"
+            Text="Потвердить"
+            TranslationY="40"
+            MaximumWidthRequest="150"
+            Clicked="ConfirmClicked"
+            VerticalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>
