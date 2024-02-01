@@ -1,6 +1,7 @@
 using icons_generator.Resources.Options;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.Json;
 using System.Xml;
 
@@ -123,13 +124,31 @@ public partial class ListPage : ContentPage
     /// </summary>
     private void UpdateList(bool needReSave = true)
     {
-        var sizes = new ImageSizesViewModel(sizesAndroid);
+        sizesAndroid.Sort();
+
+        var sizes = new ImageSizesViewModel(sizesAndroid.OrderBy(ParseSize).ToList());
+        
         SizesList.BindingContext = sizes;
 
         if (needReSave)
         {
             ReSaveJson();
         }
+    }
+
+    private static int ParseSize(string size)
+    {
+        // Используйте разделитель "x" для разделения чисел
+        string[] parts = size.Split('x');
+
+        // Преобразуйте первую часть (до "x") в число
+        if (parts.Length > 0 && int.TryParse(parts[0], out int result))
+        {
+            return result;
+        }
+
+        // Если не удается преобразовать, возвращаем максимальное значение int
+        return int.MaxValue;
     }
 
     /// <summary>
