@@ -33,13 +33,20 @@
                 x:Name="CounterBtn"
                 Text="Выбор иконки"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="PickPhoto_Clicked"
                 HorizontalOptions="Center" />
 
             <Label
                 FontSize="15"
                 HorizontalTextAlignment="Center"
                 x:Name="FileName" />
+
+            <Button
+                x:Name="ReOpenBtn"
+                Text="Выбор иконки"
+                IsVisible="false"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="PickPhoto_Clicked"
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>
