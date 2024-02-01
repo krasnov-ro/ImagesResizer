@@ -115,6 +115,7 @@ public partial class ListPage : ContentPage
                 sizesIOS = platformTypeInFile.iOS.Sizes.ToList();
             }
         }
+        UpdateList(false);
     }
 
     /// <summary>
@@ -132,6 +133,8 @@ public partial class ListPage : ContentPage
     /// </summary>
     private void UpdateList(bool needReSave)
     {
+        if (needReSave) return;
+        
         var sizes = new ImageSizesViewModel(sizesAndroid);
         SizesList.BindingContext = sizes;
     }
