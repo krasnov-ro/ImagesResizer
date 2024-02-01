@@ -121,22 +121,15 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Функция обновления ListView
     /// </summary>
-    private void UpdateList()
+    private void UpdateList(bool needReSave = true)
     {
         var sizes = new ImageSizesViewModel(sizesAndroid);
         SizesList.BindingContext = sizes;
-        ReSaveJson();
-    }
 
-    /// <summary>
-    /// Функция обновления ListView(перегрузка)
-    /// </summary>
-    private void UpdateList(bool needReSave)
-    {
-        if (needReSave) return;
-        
-        var sizes = new ImageSizesViewModel(sizesAndroid);
-        SizesList.BindingContext = sizes;
+        if (needReSave)
+        {
+            ReSaveJson();
+        }
     }
 
     /// <summary>
