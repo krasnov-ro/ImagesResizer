@@ -22,7 +22,8 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Объект для вывода размеров изображений в ListView на странице приложения
     /// </summary>
-    public ObservableCollection<ImageSizes> ImageSizes { get; set; } = new ObservableCollection<ImageSizes>();
+    public ObservableCollection<ImageSizes> ImageSizesAndroid { get; set; } = new ObservableCollection<ImageSizes>();
+    public ObservableCollection<ImageSizes> ImageSizesiOS { get; set; } = new ObservableCollection<ImageSizes>();
 
     /// <summary>
     /// Список размеров изображений для Android
@@ -39,13 +40,14 @@ public partial class ListPage : ContentPage
     }
 
     private async void ConfirmClicked(object sender, EventArgs e)
-    { 
-
+    {
+        Navigation.PopAsync();
     }
     private async void SizesListItemTapped(object sender, ItemTappedEventArgs e)
     {
 
     }
+
     /// <summary>
     /// Метод обрабатывает нажатие на кнопку AddButton(добавить)
     /// </summary>
@@ -55,17 +57,32 @@ public partial class ListPage : ContentPage
     {
         // Переменная newSize хранит в себе данные введеные в popUp
         var newSize = await DisplayPromptAsync("Добавление размера", "Введите размер в формате(0х0):", "OK", "Отмена");
-        if (newSize != null)
+        if (newSize != null && newSize.Length > 0)
         {
-            // Обновляем объект размеров изображения, добавляем туда новое значение
-            List<string> sizes = platformTypeInFile.Android.Sizes.ToList();     ///
-            sizes.Add(newSize);                                                 ///
-            platformTypeInFile.Android.Sizes = sizes.ToArray();                 ///
-            ///////////////////////////////////////////////////////////////////////
+            ImageButton clickedButton = sender as ImageButton;
+            if (clickedButton.StyleId.Contains("Android"))
+            {
+                // Обновляем объект размеров изображения, добавляем туда новое значение
+                List<string> sizes = platformTypeInFile.Android.Sizes.ToList();     ///
+                sizes.Add(newSize);                                                 ///
+                platformTypeInFile.Android.Sizes = sizes.ToArray();                 ///
+                ///////////////////////////////////////////////////////////////////////
 
-            // Добавляем в список размеров изображения новое значение
-            sizesAndroid.Add(newSize);
-           
+                // Добавляем в список размеров изображения новое значение
+                sizesAndroid.Add(newSize);
+            }
+            else if(clickedButton.StyleId.Contains("iOS"))
+            {
+                // Обновляем объект размеров изображения, добавляем туда новое значение
+                List<string> sizes = platformTypeInFile.iOS.Sizes.ToList();     ///
+                sizes.Add(newSize);                                                 ///
+                platformTypeInFile.iOS.Sizes = sizes.ToArray();                 ///
+                ///////////////////////////////////////////////////////////////////////
+
+                // Добавляем в список размеров изображения новое значение
+                sizesIOS.Add(newSize);
+            }
+
             // Обновляем ListView которая находится на странице
             UpdateList();
         }
@@ -78,12 +95,12 @@ public partial class ListPage : ContentPage
     /// <param name="e"></param>
     private async void ListItemDelClicked(object sender, EventArgs e)
     {
-        if (SizesList.SelectedItem != null)
+        if (SizesListAndroid.SelectedItem != null)
         {
             try
             {
                 // Находим выбранный элемент списка(UI) и удаляем ее из списка(переменная)  //
-                var delItem = sizesAndroid.First(p => p == SizesList.SelectedItem);        //
+                var delItem = sizesAndroid.First(p => p == SizesListAndroid.SelectedItem);        //
                 sizesAndroid.Remove(delItem);                                             //
                 ///////////////////////////////////////////////////////////////////////////
 
@@ -124,11 +141,13 @@ public partial class ListPage : ContentPage
     /// </summary>
     private void UpdateList(bool needReSave = true)
     {
-        sizesAndroid.Sort();
+        var sizesAndroidSort = new ImageSizesViewModel(sizesAndroid.OrderBy(ParseSize).ToList());
+        var sizesiOSSort = new ImageSizesViewModel(sizesIOS.OrderBy(ParseSize).ToList());
 
-        var sizes = new ImageSizesViewModel(sizesAndroid.OrderBy(ParseSize).ToList());
-        
-        SizesList.BindingContext = sizes;
+        SizesListAndroid.BindingContext = sizesAndroidSort;
+        SizesListiOS.BindingContext = sizesiOSSort;
+
+        //Header.Margin = new Thickness(Header.Margin.Left, sizesAndroid.Count * (-22.86), Header.Margin.Right, Header.Margin.Bottom);
 
         if (needReSave)
         {
@@ -169,15 +188,26 @@ public partial class ListPage : ContentPage
 
     public class ImageSizesViewModel : BindableObject
     {
-        private ObservableCollection<string> imageSizes;
+        private ObservableCollection<string> imageSizesAndroid;
+        private ObservableCollection<string> imageSizesiOS;
 
-        public ObservableCollection<string> ImageSizes
+        public ObservableCollection<string> ImageSizesAndroid
         {
-            get { return imageSizes; }
+            get { return imageSizesAndroid; }
             set
             {
-                imageSizes = value;
-                OnPropertyChanged(nameof(ImageSizes));
+                imageSizesAndroid = value;
+                OnPropertyChanged(nameof(ImageSizesAndroid));
+            }
+        }
+
+        public ObservableCollection<string> ImageSizesiOS
+        {
+            get { return imageSizesiOS; }
+            set
+            {
+                imageSizesiOS = value;
+                OnPropertyChanged(nameof(ImageSizesiOS));
             }
         }
 
@@ -185,7 +215,8 @@ public partial class ListPage : ContentPage
         public ImageSizesViewModel(List<string> imageSizes)
         {
             // Инициализация коллекции через конструктор
-            ImageSizes = new ObservableCollection<string>(imageSizes);
+            ImageSizesAndroid = new ObservableCollection<string>(imageSizes);
+            ImageSizesiOS = new ObservableCollection<string>(imageSizes);
         }
     }
 }

@@ -3,50 +3,109 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="icons_generator.ListPage"
              Title="ListPage">
-    <VerticalStackLayout>
+    <Grid>
         <Label 
-            x:Name="Header"
+            x:Name="HeaderAndroid"
             Text="Список размеров для Android"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <ListView 
-            x:Name="SizesList"
-            ItemsSource="{Binding ImageSizes}"
-            MaximumHeightRequest="400"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            ItemTapped="SizesListItemTapped"/>
-        
-        <Grid
-            VerticalOptions="Start"
-            WidthRequest="20">
-            
-            <ImageButton Source="del.png"
-            x:Name="DeleteButton"
-            Background="#0000"
-            TranslationX="20"
-            TranslationY="20"
-            ScaleX="1.7"
-            ScaleY="1.7"
-            Clicked="ListItemDelClicked"
-            VerticalOptions="Start"/>
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            Margin="50,0,0,0"
+            Grid.Column="1"/>
+        <VerticalStackLayout>
+            <ListView 
+                x:Name="SizesListAndroid"
+                ItemsSource="{Binding ImageSizesAndroid}"
+                MaximumHeightRequest="400"
+                VerticalOptions="Start"
+                HorizontalOptions="Start"
+                Margin="120,20,0,0"
+                ItemTapped="SizesListItemTapped"
+                Grid.Column="1"/>
 
-            <ImageButton Source="add.png"
-            x:Name="AddButton"
-            Background="#0000"
-            TranslationX="-20"
-            TranslationY="20"
-            ScaleX="2"
-            ScaleY="2"
-            Clicked="ListItemAddClicked"
-            VerticalOptions="Start" />
-        </Grid>
+            <Grid
+                VerticalOptions="Start"
+                HorizontalOptions="Start"
+                Margin="150,0,0,0"
+                WidthRequest="20">
+
+                <ImageButton Source="del.png"
+                    x:Name="DeleteButtonAndroid"
+                    Background="#0000"
+                    TranslationX="20"
+                    TranslationY="20"
+                    ScaleX="1.7"
+                    ScaleY="1.7"
+                    Clicked="ListItemDelClicked"
+                    VerticalOptions="Start"/>
+
+                <ImageButton Source="add.png"
+                    x:Name="AddButtonAndroid"
+                    Background="#0000"
+                    TranslationX="-20"
+                    TranslationY="20"
+                    ScaleX="2"
+                    ScaleY="2"
+                    Clicked="ListItemAddClicked"
+                    VerticalOptions="Start" />
+            </Grid>
+        </VerticalStackLayout>
+        
+        <Label 
+             x:Name="Header"
+             Text="Список размеров для iOS"
+             VerticalOptions="Start" 
+             HorizontalOptions="End"
+             Margin="0,0,50,0"
+             Grid.Column="2"
+             />
+        <VerticalStackLayout>
+            <ListView 
+                 x:Name="SizesListiOS"
+                 ItemsSource="{Binding ImageSizesiOS}"
+                 MaximumHeightRequest="400"
+                 VerticalOptions="Start"
+                 HorizontalOptions="End"
+                 Margin="0,20,90,0"
+                 ItemTapped="SizesListItemTapped"
+                 Grid.Column="2"/>
+
+            <Grid
+                 VerticalOptions="End"
+                 HorizontalOptions="End"
+                 WidthRequest="20"
+                 Margin="0,0,130,0"
+                 >
+
+                <ImageButton Source="del.png"
+                     x:Name="DeleteButton"
+                     Background="#0000"
+                     TranslationX="20"
+                     TranslationY="20"
+                     ScaleX="1.7"
+                     ScaleY="1.7"
+                     Clicked="ListItemDelClicked"
+                     VerticalOptions="Start"/>
+
+                <ImageButton Source="add.png"
+                     x:Name="AddButton"
+                     Background="#0000"
+                     TranslationX="-20"
+                     TranslationY="20"
+                     ScaleX="2"
+                     ScaleY="2"
+                     Clicked="ListItemAddClicked"
+                     VerticalOptions="Start" />
+            </Grid>
+        </VerticalStackLayout>
+        
         <Button
             x:Name="ConfirmButton"
             Text="Потвердить"
             TranslationY="40"
             MaximumWidthRequest="150"
             Clicked="ConfirmClicked"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+            Margin="0,0,0,75"
+            VerticalOptions="End" />
+    </Grid>
+
 </ContentPage>
