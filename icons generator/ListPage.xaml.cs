@@ -1,8 +1,11 @@
+using CommunityToolkit.Maui.Core.Platform;
 using icons_generator.Resources.Options;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace icons_generator;
@@ -28,11 +31,11 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Список размеров изображений для Android
     /// </summary>
-    List<string> sizesAndroid = new List<string>();
+    public List<string> sizesAndroid = new List<string>();
     /// <summary>
     /// Список размеров изображений для iOS
     /// </summary>
-    List<string> sizesIOS = new List<string>();
+    public List<string> sizesIOS = new List<string>();
     public ListPage()
     {
         InitializeComponent();
@@ -45,7 +48,22 @@ public partial class ListPage : ContentPage
     }
     private async void SizesListItemTapped(object sender, ItemTappedEventArgs e)
     {
+        ListView listView = sender as ListView;
+        if (listView.StyleId.Contains("Android"))
+        {
+            if (e.Item != null)
+            {
+                SizesListAndroid.SelectedItem = e.Item;
+            }
+        }
+        else if (listView.StyleId.Contains("iOS"))
+        {
 
+            if (e.Item != null)
+            {
+                SizesListiOS.SelectedItem = e.Item;
+            }
+        }
     }
 
     /// <summary>
@@ -57,9 +75,19 @@ public partial class ListPage : ContentPage
     {
         // Переменная newSize хранит в себе данные введеные в popUp
         var newSize = await DisplayPromptAsync("Добавление размера", "Введите размер в формате(0х0):", "OK", "Отмена");
+        newSize = newSize.Replace("х", "x");
+
+        bool isValid = Regex.IsMatch(newSize, @"^[0-9x]+$");
+
+        if (!isValid)
+        {
+            ChangeStatus("Данные некорректны! "+ newSize);
+            return;
+        }
+
         if (newSize != null && newSize.Length > 0)
         {
-            ImageButton clickedButton = sender as ImageButton;
+            Button clickedButton = sender as Button;
             if (clickedButton.StyleId.Contains("Android"))
             {
                 // Обновляем объект размеров изображения, добавляем туда новое значение
@@ -70,8 +98,9 @@ public partial class ListPage : ContentPage
 
                 // Добавляем в список размеров изображения новое значение
                 sizesAndroid.Add(newSize);
+                ChangeStatus("Добавлено " + newSize + " для Android");
             }
-            else if(clickedButton.StyleId.Contains("iOS"))
+            else if (clickedButton.StyleId.Contains("iOS"))
             {
                 // Обновляем объект размеров изображения, добавляем туда новое значение
                 List<string> sizes = platformTypeInFile.iOS.Sizes.ToList();     ///
@@ -81,6 +110,7 @@ public partial class ListPage : ContentPage
 
                 // Добавляем в список размеров изображения новое значение
                 sizesIOS.Add(newSize);
+                ChangeStatus("Добавлено " + newSize + " для iOS");
             }
 
             // Обновляем ListView которая находится на странице
@@ -95,26 +125,56 @@ public partial class ListPage : ContentPage
     /// <param name="e"></param>
     private async void ListItemDelClicked(object sender, EventArgs e)
     {
-        if (SizesListAndroid.SelectedItem != null)
+        Button clickedButton = sender as Button;
+        if (clickedButton.StyleId.Contains("Android"))
         {
-            try
+            if (SizesListAndroid.SelectedItem != null)
             {
-                // Находим выбранный элемент списка(UI) и удаляем ее из списка(переменная)  //
-                var delItem = sizesAndroid.First(p => p == SizesListAndroid.SelectedItem);        //
-                sizesAndroid.Remove(delItem);                                             //
-                ///////////////////////////////////////////////////////////////////////////
+                try
+                {
+                    // Находим выбранный элемент списка(UI) и удаляем ее из списка(переменная)  //
+                    var delItem = sizesAndroid.First(p => p == SizesListAndroid.SelectedItem); //
+                    sizesAndroid.Remove(delItem);                                             //
+                    ///////////////////////////////////////////////////////////////////////////
 
-                // Обновляем объект размеров изображения, удаляем выбранный элемент списка //
-                List<string> sizes = platformTypeInFile.Android.Sizes.ToList();           //
-                sizes.Remove(delItem);                                                   //
-                platformTypeInFile.Android.Sizes = sizes.ToArray();                     //
-                /////////////////////////////////////////////////////////////////////////
+                    // Обновляем объект размеров изображения, удаляем выбранный элемент списка //
+                    List<string> sizes = platformTypeInFile.Android.Sizes.ToList();           //
+                    sizes.Remove(delItem);                                                   //
+                    platformTypeInFile.Android.Sizes = sizes.ToArray();                     //
+                    /////////////////////////////////////////////////////////////////////////
+                    ChangeStatus("Удалено " + SizesListAndroid.SelectedItem + " для Android");
+                }
+                catch
+                {
+
+                }
+                UpdateList();
             }
-            catch
+        }
+        if (clickedButton.StyleId.Contains("iOS"))
+        {
+            if (SizesListiOS.SelectedItem != null)
             {
+                try
+                {
+                    // Находим выбранный элемент списка(UI) и удаляем ее из списка(переменная)  //
+                    var delItem = sizesIOS.First(p => p == SizesListiOS.SelectedItem);        //
+                    sizesIOS.Remove(delItem);                                             //
+                    ///////////////////////////////////////////////////////////////////////////
 
+                    // Обновляем объект размеров изображения, удаляем выбранный элемент списка //
+                    List<string> sizes = platformTypeInFile.iOS.Sizes.ToList();           //
+                    sizes.Remove(delItem);                                                   //
+                    platformTypeInFile.iOS.Sizes = sizes.ToArray();                     //
+                    /////////////////////////////////////////////////////////////////////////
+                    ChangeStatus("Удалено " + SizesListAndroid.SelectedItem + " для iOS");
+                }
+                catch
+                {
+
+                }
+                UpdateList();
             }
-            UpdateList();
         }
     }
 
@@ -218,5 +278,9 @@ public partial class ListPage : ContentPage
             ImageSizesAndroid = new ObservableCollection<string>(imageSizes);
             ImageSizesiOS = new ObservableCollection<string>(imageSizes);
         }
+    }
+    public void ChangeStatus(string status)
+    {
+        StatusBar.Text = status;
     }
 }

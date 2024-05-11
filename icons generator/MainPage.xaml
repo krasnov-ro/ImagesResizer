@@ -3,51 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="icons_generator.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <Image
-                x:Name="MainImage"
-                Source="image_resizer.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+        <ScrollView Grid.Row="0">
+            <StackLayout
+                Spacing="20"
+                Padding="30,0"
+                VerticalOptions="Center">
+                <Label
+                    Text="Изменение размера изображений"
+                    SemanticProperties.HeadingLevel="Level1"
+                    FontSize="32"
+                    HorizontalOptions="Center" />
+                <Image
+                    x:Name="MainImage"
+                    Source="image_resizer.png"
+                    SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                    HeightRequest="200"
+                    HorizontalOptions="Center" />
+                <Label
+                    FontSize="15"
+                    HorizontalTextAlignment="Center"
+                    x:Name="FileName" />
 
-            <Label
-                Text="Изменение размера изображений"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+                <Entry
+                    x:Name="StatusBar"
+                    IsEnabled="False"
+                    Placeholder=""
+                    Text="Выберите изображение"
+                    FontSize="Medium"
+                    TextColor="Red"
+                    HorizontalOptions="Center" />
 
-            <Label
-                Text="Создано на базе .NET (by Robert Krasnov)"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                <Button
+                    x:Name="CounterBtn"
+                    Text="Выбор иконки"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    HorizontalOptions="Center" />
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Выбор иконки"
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Center" />
+                <Button
+                    x:Name="ReOpenBtn"
+                    Text="Выбор иконки"
+                    IsVisible="false"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="PickPhoto_Clicked"
+                    HorizontalOptions="Center" />
+                <Button
+                    x:Name="GenerateGoBtn"
+                    Text="Сгенерировать"
+                    IsVisible="false"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="GenerateGo_Clicked"
+                    HorizontalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
 
-            <Label
-                FontSize="15"
-                HorizontalTextAlignment="Center"
-                x:Name="FileName" />
-
-            <Button
-                x:Name="ReOpenBtn"
-                Text="Выбор иконки"
-                IsVisible="false"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="PickPhoto_Clicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <Label 
+            Text="Создано на базе .NET (by Robert Krasnov)"
+            SemanticProperties.HeadingLevel="Level2"
+            SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+            FontSize="12"
+            TextColor="Gray"
+            VerticalOptions="End"
+            HorizontalOptions="End"
+            Grid.Row="2"/>
+    </Grid>
 </ContentPage>
+

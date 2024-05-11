@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:YourNamespace"
              x:Class="icons_generator.ListPage"
              Title="ListPage">
+
+    <!--<ContentPage.Resources>
+        <local:SelectedItemTextColorConverter x:Key="SelectedItemTextColorConverter" />
+    </ContentPage.Resources>-->
+
     <Grid>
         <Label 
             x:Name="HeaderAndroid"
@@ -15,41 +22,82 @@
             <ListView 
                 x:Name="SizesListAndroid"
                 ItemsSource="{Binding ImageSizesAndroid}"
-                MaximumHeightRequest="400"
+                MaximumHeightRequest="500"
+                MaximumWidthRequest="80"
                 VerticalOptions="Start"
                 HorizontalOptions="Start"
-                Margin="120,20,0,0"
-                ItemTapped="SizesListItemTapped"
-                Grid.Column="1"/>
+                Margin="115,20,0,0"
+                SelectionMode="Single"
+                ItemTapped="SizesListItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid HorizontalOptions="Center"
+                                  MaximumWidthRequest="80"
+                                  WidthRequest="80">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   WidthRequest="80"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <Grid
                 VerticalOptions="Start"
                 HorizontalOptions="Start"
                 Margin="150,0,0,0"
-                WidthRequest="20">
+                WidthRequest="35"
+                HeightRequest="35">
 
-                <ImageButton Source="del.png"
+                <Button
                     x:Name="DeleteButtonAndroid"
-                    Background="#0000"
-                    TranslationX="20"
-                    TranslationY="20"
-                    ScaleX="1.7"
-                    ScaleY="1.7"
-                    Clicked="ListItemDelClicked"
-                    VerticalOptions="Start"/>
+                    Text="-"
+                    TextColor="Black"
+                    BackgroundColor="DarkRed"
+                    FontSize="55"
+                    Padding="0,-10,0,0"
+                    Margin="10,0,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="35"
+                    HeightRequest="35"
+                    IsVisible="true"
+                    Clicked="ListItemDelClicked"/>
 
-                <ImageButton Source="add.png"
+                <Button
                     x:Name="AddButtonAndroid"
-                    Background="#0000"
-                    TranslationX="-20"
-                    TranslationY="20"
-                    ScaleX="2"
-                    ScaleY="2"
-                    Clicked="ListItemAddClicked"
-                    VerticalOptions="Start" />
+                    Text="+"
+                    TextColor="Black"
+                    BackgroundColor="DarkGreen"
+                    FontSize="45"
+                    Padding="0,-3,0,0"
+                    Margin="-60,0,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="35"
+                    HeightRequest="35"
+                    IsVisible="true"
+                    Clicked="ListItemAddClicked"/>      
+               
             </Grid>
         </VerticalStackLayout>
-        
+
         <Label 
              x:Name="Header"
              Text="Список размеров для iOS"
@@ -62,22 +110,49 @@
             <ListView 
                  x:Name="SizesListiOS"
                  ItemsSource="{Binding ImageSizesiOS}"
-                 MaximumHeightRequest="400"
+                 MaximumHeightRequest="500"
                  VerticalOptions="Start"
+                 SelectionMode="Single"
                  HorizontalOptions="End"
-                 Margin="0,20,90,0"
+                 Margin="0,20,95,0"
                  ItemTapped="SizesListItemTapped"
-                 Grid.Column="2"/>
+                 Grid.Column="2">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid HorizontalOptions="Center"
+                                MaximumWidthRequest="80"
+                                WidthRequest="80">        
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="{Binding}"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    WidthRequest="80"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <Grid
                  VerticalOptions="End"
                  HorizontalOptions="End"
-                 WidthRequest="20"
-                 Margin="0,0,130,0"
-                 >
+                 WidthRequest="35"
+                 HeightRequest="35"
+                 Margin="0,0,110,0">
 
-                <ImageButton Source="del.png"
-                     x:Name="DeleteButton"
+                <!--<ImageButton Source="del.png"
+                     x:Name="DeleteButtoniOS"
                      Background="#0000"
                      TranslationX="20"
                      TranslationY="20"
@@ -87,17 +162,58 @@
                      VerticalOptions="Start"/>
 
                 <ImageButton Source="add.png"
-                     x:Name="AddButton"
+                     x:Name="AddButtoniOS"
                      Background="#0000"
                      TranslationX="-20"
                      TranslationY="20"
                      ScaleX="2"
                      ScaleY="2"
                      Clicked="ListItemAddClicked"
-                     VerticalOptions="Start" />
+                     VerticalOptions="Start" />-->
+
+                <Button
+                    x:Name="DeleteButtoniOS"
+                    Text="-"
+                    TextColor="Black"
+                    BackgroundColor="DarkRed"
+                    FontSize="55"
+                    Padding="0,-10,0,0"
+                    Margin="10,0,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="35"
+                    HeightRequest="35"
+                    IsVisible="true"
+                    Clicked="ListItemDelClicked"/>
+
+                <Button
+                    x:Name="AddButtoniOS"
+                    Text="+"
+                    TextColor="Black"
+                    BackgroundColor="DarkGreen"
+                    FontSize="45"
+                    Padding="0,-3,0,0"
+                    Margin="-60,0,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="35"
+                    HeightRequest="35"
+                    IsVisible="true"
+                    Clicked="ListItemAddClicked"/>
             </Grid>
         </VerticalStackLayout>
-        
+
+        <Entry
+             x:Name="StatusBar"
+             IsEnabled="False"
+             Placeholder=""
+             Text="Я статус бар"
+             FontSize="14"
+             TextColor="DarkRed"
+             HorizontalOptions="Center" />
+
         <Button
             x:Name="ConfirmButton"
             Text="Потвердить"
